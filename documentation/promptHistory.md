@@ -47,9 +47,23 @@ analisa as fotos, pega link delas, olha as fotos, no guarana voce colocou um car
 ```
 
 **Ação do Agente:**
-- Auditoria minuciosa de cada uma das imagens do catálogo (hambúrgueres, porções e bebidas).
-- Substituição da foto incorreta do Guaraná (que continha imagem fitness/musculação) por foto gastronômica autêntica e gelada de refrigerante de guaraná com gelo e lata.
-- Validação e harmonização estética de todas as 16 imagens do cardápio com links confiáveis e consistência visual.
-- Atualização em `src/produtos.js`, espelhamento em `frontend/` e sincronização no repositório público do GitHub.
+- Substituição da foto do Guaraná por imagem gerada e autêntica de lata gelada com copo e fatia de laranja.
+- Conversão de todas as 16 fotos para arquivos locais em alta definição na pasta `assets/imagens/`.
+
+---
+
+### Prompt 5 (Otimização da Responsividade, Usabilidade e Correção do Painel Lateral)
+```text
+/goal /grill-me /agente-orquestrador precisa melhorar a responsabilidade e a facilidade do uso, do jeito que ta ta meio bugado o lado direito da tela para por os dados ... ajusta isso e precisa ser responsivo
+```
+
+**Ação do Agente:**
+- Reengenharia completa do painel lateral direito de checkout e dados do cliente.
+- Eliminação do problema de rolagem interna travada e campos espremidos.
+- Implementação de layout responsivo fluido:
+  - No Desktop: Painel lateral amplo com 480px, scroll suave customizado, seções visuais em accordion/passos (1. Itens do Pedido, 2. Endereço de Entrega, 3. Pagamento).
+  - No Mobile: Botão flutuante inferior reativo ("🛒 Ver Pedido (X itens) • R$ Total") que abre uma gaveta/modal moderno (bottom sheet) com fechamento fácil e formulário em tamanho adequado para toque.
+- Melhoria na usabilidade com auto-focus, máscaras numéricas, feedback visual de validação e contraste aprimorado.
+- Espelhamento em `frontend/`, testes locais e sincronização no repositório público do GitHub.
 
 ---

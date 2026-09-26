@@ -28,7 +28,8 @@
     <main class="main-content">
       <!-- VISÃO DO CLIENTE (CARDÁPIO & CHECKOUT) -->
       <section id="viewCliente" class="view-panel active">
-        <div>
+        <!-- Coluna da Vitrine -->
+        <div class="vitrine-coluna">
           <header class="section-intro">
             <h2>Cardápio Artesanal Ourinhos</h2>
             <p>Selecione seus lanches com blends prensados na manteiga, acompanhamentos e bebidas geladíssimas.</p>
@@ -47,111 +48,142 @@
           </section>
         </div>
 
-        <!-- Container do Carrinho e Checkout -->
+        <!-- Backdrop para Drawer Mobile -->
+        <div id="carrinhoBackdrop" class="carrinho-backdrop hidden"></div>
+
+        <!-- Coluna do Carrinho e Checkout (Responsivo & Otimizado) -->
         <aside id="carrinho" class="carrinho-drawer">
           <div class="carrinho-header">
-            <h3>Seu Pedido (<span id="contadorItensCarrinho">0</span>)</h3>
-            <span style="font-size: 0.8rem; color: var(--neon-orange); font-weight: 700;">BurguerSync Box</span>
+            <div class="carrinho-header-titulo">
+              <h3>Seu Pedido</h3>
+              <span class="carrinho-badge-total" id="contadorItensCarrinho">0</span>
+            </div>
+            <button type="button" id="btnFecharCarrinhoMobile" class="btn-fechar-carrinho" aria-label="Fechar Carrinho no Mobile">✕</button>
           </div>
 
           <div class="carrinho-conteudo">
-            <ul id="listaItensCarrinho" class="itens-carrinho-lista">
-              <!-- Itens injetados dinamicamente via JS -->
-            </ul>
+            <!-- PASSO 1: ITENS DO PEDIDO -->
+            <div class="checkout-passo">
+              <div class="passo-header">
+                <span class="passo-numero">1</span>
+                <h4>Itens Selecionados</h4>
+              </div>
+              <ul id="listaItensCarrinho" class="itens-carrinho-lista">
+                <!-- Itens injetados dinamicamente via JS -->
+              </ul>
 
-            <div id="resumoFinanceiro" class="resumo-financeiro">
-              <div class="linha-resumo">
-                <span>Subtotal</span>
-                <span id="subtotalValor">R$ 0,00</span>
-              </div>
-              <div class="linha-resumo">
-                <span>Taxa Fixa de Entrega (Ourinhos)</span>
-                <span id="taxaEntregaValor">R$ 5,00</span>
-              </div>
-              <div class="linha-resumo linha-total">
-                <span>Total Geral</span>
-                <span id="totalGeralValor">R$ 5,00</span>
+              <div id="resumoFinanceiro" class="resumo-financeiro">
+                <div class="linha-resumo">
+                  <span>Subtotal</span>
+                  <span id="subtotalValor">R$ 0,00</span>
+                </div>
+                <div class="linha-resumo">
+                  <span>Taxa de Entrega (Ourinhos)</span>
+                  <span id="taxaEntregaValor">R$ 5,00</span>
+                </div>
+                <div class="linha-resumo linha-total">
+                  <span>Total Geral</span>
+                  <span id="totalGeralValor">R$ 5,00</span>
+                </div>
               </div>
             </div>
 
-            <!-- Formulário de Entrega e Pagamento -->
+            <!-- FORMULÁRIO DE DADOS E PAGAMENTO -->
             <form id="formEntrega" class="form-entrega" novalidate>
-              <fieldset class="form-grupo">
-                <legend>Dados para Contato</legend>
-                <div class="input-control">
-                  <label for="nomeCliente">Nome Completo *</label>
-                  <input type="text" id="nomeCliente" name="nomeCliente" required placeholder="Ex: Victor César">
+              <!-- PASSO 2: CONTATO E ENTREGA -->
+              <div class="checkout-passo">
+                <div class="passo-header">
+                  <span class="passo-numero">2</span>
+                  <h4>Dados de Entrega (Ourinhos-SP)</h4>
                 </div>
-                <div class="input-control">
-                  <label for="emailCliente">E-mail *</label>
-                  <input type="email" id="emailCliente" name="emailCliente" required placeholder="seuemail@exemplo.com">
-                </div>
-                <div class="input-control">
-                  <label for="telefoneCliente">WhatsApp / Celular (DDD 14) *</label>
-                  <input type="tel" id="telefoneCliente" name="telefoneCliente" required placeholder="(14) 99999-9999">
-                </div>
-              </fieldset>
 
-              <fieldset class="form-grupo">
-                <legend>Endereço de Entrega (Ourinhos-SP)</legend>
-                <div class="grid-form-duplo">
-                  <div class="input-control flex-grow">
-                    <label for="enderecoRua">Rua / Avenida *</label>
-                    <input type="text" id="enderecoRua" name="enderecoRua" required placeholder="Ex: Rua Vitório Christoni">
+                <div class="form-grupo-clean">
+                  <div class="input-control">
+                    <label for="nomeCliente">Nome Completo *</label>
+                    <input type="text" id="nomeCliente" name="nomeCliente" required placeholder="Ex: Victor César">
                   </div>
-                  <div class="input-control w-pequeno">
-                    <label for="enderecoNumero">Número *</label>
-                    <input type="text" id="enderecoNumero" name="enderecoNumero" required placeholder="1500">
+
+                  <div class="grid-form-contato">
+                    <div class="input-control">
+                      <label for="telefoneCliente">WhatsApp / Celular (DDD 14) *</label>
+                      <input type="tel" id="telefoneCliente" name="telefoneCliente" required placeholder="(14) 99999-9999">
+                    </div>
+                    <div class="input-control">
+                      <label for="emailCliente">E-mail *</label>
+                      <input type="email" id="emailCliente" name="emailCliente" required placeholder="seuemail@exemplo.com">
+                    </div>
                   </div>
-                </div>
-                <div class="input-control">
-                  <label for="enderecoBairro">Bairro *</label>
-                  <input type="text" id="enderecoBairro" name="enderecoBairro" required placeholder="Ex: Vila São Luiz">
-                </div>
-                <div class="input-control">
-                  <label for="enderecoReferencia">Ponto de Referência (Opcional)</label>
-                  <input type="text" id="enderecoReferencia" name="enderecoReferencia" placeholder="Ex: Próximo à praça central ou mercado">
-                </div>
-                <div class="input-control">
-                  <label for="obsEntrega">Instruções para o Entregador</label>
-                  <textarea id="obsEntrega" name="obsEntrega" rows="2" placeholder="Ex: Tocar o interfone 22 ou deixar na portaria com segurança"></textarea>
-                </div>
-              </fieldset>
 
-              <fieldset class="form-grupo">
-                <legend>Forma de Pagamento</legend>
-                <div id="tipoPagamento" class="pagamento-opcoes">
-                  <label class="radio-card">
-                    <input type="radio" name="pagamentoMetodo" value="pix" checked>
-                    <span class="radio-label">⚡ Pix Instantâneo</span>
-                  </label>
-                  <label class="radio-card">
-                    <input type="radio" name="pagamentoMetodo" value="cartao">
-                    <span class="radio-label">💳 Cartão na Entrega</span>
-                  </label>
-                  <label class="radio-card">
-                    <input type="radio" name="pagamentoMetodo" value="dinheiro">
-                    <span class="radio-label">💵 Dinheiro</span>
-                  </label>
-                </div>
+                  <div class="grid-rua-numero">
+                    <div class="input-control rua-campo">
+                      <label for="enderecoRua">Rua / Avenida *</label>
+                      <input type="text" id="enderecoRua" name="enderecoRua" required placeholder="Ex: Rua Vitório Christoni">
+                    </div>
+                    <div class="input-control numero-campo">
+                      <label for="enderecoNumero">Número *</label>
+                      <input type="text" id="enderecoNumero" name="enderecoNumero" required placeholder="1500">
+                    </div>
+                  </div>
 
-                <!-- Campo Troco (Condicional) -->
-                <div id="campoTroco" class="input-control troco-box hidden">
-                  <label for="trocoPara">Precisa de troco para quanto?</label>
-                  <input type="text" id="trocoPara" name="trocoPara" placeholder="Ex: R$ 50,00 ou R$ 100,00">
-                </div>
+                  <div class="input-control">
+                    <label for="enderecoBairro">Bairro de Ourinhos *</label>
+                    <input type="text" id="enderecoBairro" name="enderecoBairro" required placeholder="Ex: Vila São Luiz, Centro...">
+                  </div>
 
-                <!-- Painel Pix (Condicional) -->
-                <div id="pixCheckout" class="pix-info-box">
-                  <div class="pix-badge">Chave Pix Oficial</div>
-                  <p class="pix-instrucao">Transfira e seu pedido entrará em preparo imediatamente.</p>
-                  <div class="pix-copia-cola">
-                    <code>pix@burguersync.ourinhos.com.br</code>
-                    <button type="button" class="btn-copiar-pix">Copiar</button>
+                  <div class="input-control">
+                    <label for="enderecoReferencia">Ponto de Referência (Opcional)</label>
+                    <input type="text" id="enderecoReferencia" name="enderecoReferencia" placeholder="Ex: Próximo à praça ou supermercado">
+                  </div>
+
+                  <div class="input-control">
+                    <label for="obsEntrega">Instruções para o Entregador</label>
+                    <textarea id="obsEntrega" name="obsEntrega" rows="2" placeholder="Ex: Deixar na portaria ou interfone 22"></textarea>
                   </div>
                 </div>
-              </fieldset>
+              </div>
 
+              <!-- PASSO 3: FORMA DE PAGAMENTO -->
+              <div class="checkout-passo">
+                <div class="passo-header">
+                  <span class="passo-numero">3</span>
+                  <h4>Forma de Pagamento</h4>
+                </div>
+
+                <div class="form-grupo-clean">
+                  <div id="tipoPagamento" class="pagamento-opcoes">
+                    <label class="radio-card active">
+                      <input type="radio" name="pagamentoMetodo" value="pix" checked>
+                      <span class="radio-label">⚡ Pix Instantâneo</span>
+                    </label>
+                    <label class="radio-card">
+                      <input type="radio" name="pagamentoMetodo" value="cartao">
+                      <span class="radio-label">💳 Cartão na Entrega</span>
+                    </label>
+                    <label class="radio-card">
+                      <input type="radio" name="pagamentoMetodo" value="dinheiro">
+                      <span class="radio-label">💵 Dinheiro</span>
+                    </label>
+                  </div>
+
+                  <!-- Campo Troco (Condicional) -->
+                  <div id="campoTroco" class="input-control troco-box hidden">
+                    <label for="trocoPara">Precisa de troco para quanto?</label>
+                    <input type="text" id="trocoPara" name="trocoPara" placeholder="Ex: R$ 50,00 ou R$ 100,00">
+                  </div>
+
+                  <!-- Painel Pix (Condicional) -->
+                  <div id="pixCheckout" class="pix-info-box">
+                    <div class="pix-badge">Chave Pix Oficial</div>
+                    <p class="pix-instrucao">Transfira e seu pedido entrará em preparo imediatamente.</p>
+                    <div class="pix-copia-cola">
+                      <code>pix@burguersync.ourinhos.com.br</code>
+                      <button type="button" class="btn-copiar-pix">Copiar</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- BOTÃO FINAL DE SUBMISSÃO -->
               <button type="submit" id="btnFinalizarPedido" class="btn-checkout-neon">
                 Finalizar e Enviar Pedido para a Cozinha
               </button>
@@ -160,6 +192,22 @@
         </aside>
       </section>
     </main>
+
+    <!-- BARRA FLUTUANTE MOBILE (Ativa em telas < 1024px) -->
+    <div id="barraFlutuanteMobile" class="barra-flutuante-mobile hidden" role="region" aria-label="Acesso Rápido ao Carrinho">
+      <div class="flutuante-conteudo">
+        <div class="flutuante-detalhes">
+          <span class="flutuante-badge" id="flutuanteQtdBadge">0</span>
+          <div class="flutuante-textos">
+            <span class="flutuante-total" id="flutuanteTotalValor">R$ 5,00</span>
+            <span class="flutuante-sub">com taxa de entrega inclusa</span>
+          </div>
+        </div>
+        <button type="button" id="btnAbrirCarrinhoMobile" class="btn-abrir-carrinho-mobile">
+          Ver Pedido ➔
+        </button>
+      </div>
+    </div>
 
     <!-- Modal de Confirmação do Pedido -->
     <div id="modalConfirmacao" class="modal-overlay hidden" role="dialog" aria-modal="true">

@@ -4,6 +4,7 @@
  * ==============================================================================
  * Catálogo com filtros de categorias, carrinho reativo, cálculo automático com frete
  * fixo de Ourinhos (R$ 5,00), validação cadastral com DDD 14 e envio ao Firestore.
+ * Inclui controle de gaveta responsiva (Mobile/Tablet) e barra flutuante.
  */
 
 import { db, collection, addDoc, serverTimestamp } from "./firebase-config.js";
@@ -14,7 +15,7 @@ let carrinho = [];
 let categoriaAtiva = "todos";
 const TAXA_ENTREGA_FIXA = 5.00;
 
-// Elementos DOM
+// Elementos DOM Principais
 const vitrineLanches = document.getElementById("vitrineLanches");
 const containerCategorias = document.getElementById("containerCategorias");
 const listaItensCarrinho = document.getElementById("listaItensCarrinho");
@@ -31,6 +32,15 @@ const modalPedidoId = document.getElementById("modalPedidoId");
 const modalPedidoResumo = document.getElementById("modalPedidoResumo");
 const btnFecharModal = document.getElementById("btnFecharModal");
 const btnCopiarPix = document.querySelector(".btn-copiar-pix");
+
+// Elementos da Gaveta Mobile e Barra Flutuante
+const carrinhoDrawer = document.getElementById("carrinho");
+const carrinhoBackdrop = document.getElementById("carrinhoBackdrop");
+const barraFlutuanteMobile = document.getElementById("barraFlutuanteMobile");
+const btnAbrirCarrinhoMobile = document.getElementById("btnAbrirCarrinhoMobile");
+const btnFecharCarrinhoMobile = document.getElementById("btnFecharCarrinhoMobile");
+const flutuanteQtdBadge = document.getElementById("flutuanteQtdBadge");
+const flutuanteTotalValor = document.getElementById("flutuanteTotalValor");
 
 /**
  * Formata valores para moeda brasileira (BRL)
@@ -77,7 +87,7 @@ function renderizarCatalogo() {
 
   if (produtosExibidos.length === 0) {
     vitrineLanches.innerHTML = `
-      <div style="grid-column: 1 / -1; text-align: center; padding: 2rem; color: var(--text-muted);">
+      <div style="grid-column: 1 / -1; text-align: center; padding: 2.5rem; color: var(--text-muted); background: var(--bg-card); border-radius: 12px;">
         Nenhum produto cadastrado nesta categoria.
       </div>
     `;
@@ -107,7 +117,6 @@ function renderizarCatalogo() {
     vitrineLanches.appendChild(card);
   });
 
-  // Vincula eventos nos botões de adicionar
   vitrineLanches.querySelectorAll(".btn-add-carrinho").forEach(btn => {
     btn.addEventListener("click", (e) => {
       const id = e.currentTarget.dataset.id;
@@ -137,6 +146,11 @@ function adicionarAoCarrinho(produtoId) {
   }
 
   atualizarCarrinho();
+
+  // Se estiver em tela móvel e carrinho fechado, abre ou pisca a barra flutuante
+  if (window.innerWidth < 1024) {
+    abrirDrawerMobile();
+  }
 }
 
 /**
@@ -163,21 +177,23 @@ function removerDoCarrinho(produtoId) {
 }
 
 /**
- * Atualiza o DOM do carrinho e os totais
+ * Atualiza o DOM do carrinho, totais e barra flutuante mobile
  */
 function atualizarCarrinho() {
   if (!listaItensCarrinho) return;
+
+  let totalQtd = 0;
+  let subtotal = 0;
 
   if (carrinho.length === 0) {
     listaItensCarrinho.innerHTML = `<li class="carrinho-vazio-msg">Seu carrinho está vazio.<br>Escolha seus lanches e bebidas ao lado! 🍔🥤</li>`;
     if (contadorItensCarrinho) contadorItensCarrinho.textContent = "0";
     if (subtotalValor) subtotalValor.textContent = formatarMoeda(0);
     if (totalGeralValor) totalGeralValor.textContent = formatarMoeda(TAXA_ENTREGA_FIXA);
+    if (barraFlutuanteMobile) barraFlutuanteMobile.classList.add("hidden");
     return;
   }
 
-  let totalQtd = 0;
-  let subtotal = 0;
   listaItensCarrinho.innerHTML = "";
 
   carrinho.forEach(item => {
@@ -206,13 +222,22 @@ function atualizarCarrinho() {
     listaItensCarrinho.appendChild(li);
   });
 
-  // Atualiza valores financeiros
+  const totalFinal = subtotal + TAXA_ENTREGA_FIXA;
+
+  // Atualiza valores desktop
   if (contadorItensCarrinho) contadorItensCarrinho.textContent = totalQtd;
   if (subtotalValor) subtotalValor.textContent = formatarMoeda(subtotal);
   if (taxaEntregaValor) taxaEntregaValor.textContent = formatarMoeda(TAXA_ENTREGA_FIXA);
-  if (totalGeralValor) totalGeralValor.textContent = formatarMoeda(subtotal + TAXA_ENTREGA_FIXA);
+  if (totalGeralValor) totalGeralValor.textContent = formatarMoeda(totalFinal);
 
-  // Vincula botões de controle do carrinho
+  // Atualiza barra flutuante mobile
+  if (barraFlutuanteMobile) {
+    barraFlutuanteMobile.classList.remove("hidden");
+    if (flutuanteQtdBadge) flutuanteQtdBadge.textContent = totalQtd;
+    if (flutuanteTotalValor) flutuanteTotalValor.textContent = formatarMoeda(totalFinal);
+  }
+
+  // Vincula controles dos itens
   listaItensCarrinho.querySelectorAll(".btn-aumentar").forEach(btn => {
     btn.addEventListener("click", () => alterarQuantidade(btn.dataset.id, 1));
   });
@@ -234,6 +259,27 @@ function atualizarCarrinho() {
       }
     });
   });
+}
+
+/**
+ * Controle da gaveta responsiva (Mobile/Tablet)
+ */
+function abrirDrawerMobile() {
+  carrinhoDrawer?.classList.add("drawer-open");
+  carrinhoBackdrop?.classList.remove("hidden");
+  document.body.style.overflow = window.innerWidth < 1024 ? "hidden" : "";
+}
+
+function fecharDrawerMobile() {
+  carrinhoDrawer?.classList.remove("drawer-open");
+  carrinhoBackdrop?.classList.add("hidden");
+  document.body.style.overflow = "";
+}
+
+function configurarControlesDrawerMobile() {
+  btnAbrirCarrinhoMobile?.addEventListener("click", abrirDrawerMobile);
+  btnFecharCarrinhoMobile?.addEventListener("click", fecharDrawerMobile);
+  carrinhoBackdrop?.addEventListener("click", fecharDrawerMobile);
 }
 
 /**
@@ -259,7 +305,7 @@ function configurarMascaraTelefone() {
 }
 
 /**
- * Alternância de opções de pagamento (Troco / Pix)
+ * Alternância de opções de pagamento e seleção visual
  */
 function configurarOpcoesPagamento() {
   const opcoesRadio = document.querySelectorAll('input[name="pagamentoMetodo"]');
@@ -267,6 +313,10 @@ function configurarOpcoesPagamento() {
 
   opcoesRadio.forEach(radio => {
     radio.addEventListener("change", (e) => {
+      // Atualiza visual do card selecionado
+      document.querySelectorAll(".radio-card").forEach(c => c.classList.remove("active"));
+      radio.closest(".radio-card")?.classList.add("active");
+
       if (e.target.value === "dinheiro") {
         campoTroco?.classList.remove("hidden");
         trocoPara?.focus();
@@ -295,7 +345,7 @@ function configurarOpcoesPagamento() {
 }
 
 /**
- * Validação rigorosa dos campos antes do envio
+ * Validação rigorosa dos campos com foco automático
  */
 function validarFormulario() {
   const nome = document.getElementById("nomeCliente")?.value.trim();
@@ -352,6 +402,7 @@ function destacarErro(fieldId, mensagem) {
   if (campo) {
     campo.classList.add("input-error");
     campo.focus();
+    campo.scrollIntoView({ behavior: "smooth", block: "center" });
   }
   alert(`⚠️ Atenção: ${mensagem}`);
 }
@@ -420,6 +471,10 @@ async function finalizarPedido(e) {
     const docRef = await addDoc(collection(db, "pedidos"), payloadPedido);
     console.log("✅ Pedido gravado com sucesso! ID:", docRef.id);
 
+    // Fecha a gaveta mobile se estiver aberta
+    fecharDrawerMobile();
+
+    // Exibe modal de sucesso
     exibirModalSucesso(docRef.id, payloadPedido);
 
     // Reseta carrinho e formulário
@@ -469,6 +524,7 @@ export function inicializarCliente() {
   atualizarCarrinho();
   configurarMascaraTelefone();
   configurarOpcoesPagamento();
+  configurarControlesDrawerMobile();
 
   if (formEntrega) {
     formEntrega.addEventListener("submit", finalizarPedido);
@@ -479,7 +535,6 @@ export function inicializarCliente() {
   });
 }
 
-// Inicializa automaticamente se carregado em página dedicada
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", inicializarCliente);
 } else {
