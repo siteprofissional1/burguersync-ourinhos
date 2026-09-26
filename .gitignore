@@ -1,6 +1,7 @@
 # Arquivos de ambiente e segredos
 .env
 *.env.local
+mcp-server.json
 
 # Dependências
 node_modules/
