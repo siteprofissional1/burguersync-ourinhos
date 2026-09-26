@@ -3,7 +3,7 @@
  * BurguerSync Ourinhos - Catálogo Oficial de Produtos (Layer 3)
  * ==============================================================================
  * 10 Hambúrgueres artesanais gourmet + 5 Bebidas selecionadas + Porções especiais.
- * Fotos culinárias profissionais em alta definição com estética Dark Mode.
+ * Fotos culinárias profissionais 100% locais em alta definição com estética Dark Mode.
  */
 
 export const CATEGORIAS = [
@@ -41,7 +41,7 @@ export const PRODUTOS = [
     nome: "Duplo Cheddar Melt",
     descricao: "Pão brioche selado, dois blends suculentos de 110g, verdadeira cascata de cheddar inglês derretido e cebola grelhada no shoyu.",
     preco: 32.00,
-    imagem: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=800&q=80",
+    imagem: "assets/imagens/duplo-cheddar.jpg",
     destaque: "Especial"
   },
   {
@@ -50,7 +50,7 @@ export const PRODUTOS = [
     nome: "Smokehouse BBQ Artesanal",
     descricao: "Blend de 180g defumado com lenha de macieira, queijo prato tostado, tiras crocantes de bacon caipira e molho barbecue artesanal picante.",
     preco: 36.00,
-    imagem: "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=800&q=80",
+    imagem: "assets/imagens/smokehouse-bbq.jpg",
     destaque: "Defumado"
   },
   {
@@ -59,7 +59,7 @@ export const PRODUTOS = [
     nome: "Trufado Gorgonzola Burger",
     descricao: "Blend nobre de costela angus 180g, fondue cremoso de gorgonzola com toque suave de azeite trufado, rúcula fresca e geleia de pimenta.",
     preco: 39.00,
-    imagem: "https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=800&q=80",
+    imagem: "assets/imagens/trufado-gorgonzola.jpg",
     destaque: "Linha Gourmet"
   },
   {
@@ -68,7 +68,7 @@ export const PRODUTOS = [
     nome: "Crispy Chicken Supreme",
     descricao: "Sobrecoxa de frango marinada em ervas e empanada em farinha panko ultracrocante, queijo mozarela derretido, maionese verde e picles doce.",
     preco: 27.00,
-    imagem: "https://images.unsplash.com/photo-1625813506062-0aeb1d7a094b?auto=format&fit=crop&w=800&q=80",
+    imagem: "assets/imagens/crispy-chicken.jpg",
     destaque: "Crocante"
   },
   {
@@ -77,7 +77,7 @@ export const PRODUTOS = [
     nome: "Costela Desfiada 8 Horas",
     descricao: "Blend bovino 160g coberto com generosa porção de costela bovina desfiada marinada por 8 horas, provolone derretido e maionese defumada.",
     preco: 38.00,
-    imagem: "https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?auto=format&fit=crop&w=800&q=80",
+    imagem: "assets/imagens/costela-desfiada.jpg",
     destaque: "Receita Secreta"
   },
   {
@@ -86,7 +86,7 @@ export const PRODUTOS = [
     nome: "Jalapeño Fire Smash",
     descricao: "Dois smash burgers de 80g na chapa bem tostada, queijo monterey jack, picles de pimenta jalapeño artesanal e maionese sriracha da casa.",
     preco: 31.00,
-    imagem: "https://images.unsplash.com/photo-1553979459-d2229ba7433b?auto=format&fit=crop&w=800&q=80",
+    imagem: "assets/imagens/jalapeno-fire.jpg",
     destaque: "Picante"
   },
   {
@@ -95,7 +95,7 @@ export const PRODUTOS = [
     nome: "Veggie Cogumelos Salteados",
     descricao: "Hambúrguer artesanal de grão-de-bico com especiarias, mix de cogumelos shimeji e paris salteados na manteiga, queijo vegano e brotos frescos.",
     preco: 33.00,
-    imagem: "https://images.unsplash.com/photo-1520072959219-c595dc870360?auto=format&fit=crop&w=800&q=80",
+    imagem: "assets/imagens/veggie-cogumelos.jpg",
     destaque: "Vegetariano"
   },
   {
@@ -104,7 +104,7 @@ export const PRODUTOS = [
     nome: "Triplo Smash Vulcão",
     descricao: "O gigante da casa: 3 smash burgers de 80g prensados na crostinha, triplo queijo cheddar, farofa crocante de bacon artesanal e molho burguer sync.",
     preco: 42.00,
-    imagem: "https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?auto=format&fit=crop&w=800&q=80",
+    imagem: "assets/imagens/triplo-smash.jpg",
     destaque: "Gigante da Casa"
   },
 
@@ -115,28 +115,28 @@ export const PRODUTOS = [
     id: "d1",
     categoria: "bebidas",
     nome: "Coca-Cola Original Lata 350ml",
-    descricao: "Refrigerante Coca-Cola em lata 350ml trincando de gelada.",
+    descricao: "Refrigerante Coca-Cola em lata 350ml trincando de gelada com gelo e fatias de limão.",
     preco: 6.00,
-    imagem: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=800&q=80",
+    imagem: "assets/imagens/coca-cola.jpg",
     destaque: "Gelada"
   },
   {
     id: "d2",
     categoria: "bebidas",
     nome: "Coca-Cola Sem Açúcar 350ml",
-    descricao: "Coca-Cola Zero calorias em lata 350ml extremamente refrescante.",
+    descricao: "Coca-Cola Zero açúcar em lata 350ml extremamente refrescante servida com gelo.",
     preco: 6.00,
-    imagem: "https://images.unsplash.com/photo-1554866585-cd94860890b7?auto=format&fit=crop&w=800&q=80",
+    imagem: "assets/imagens/coca-zero.jpg",
     destaque: "Zero Açúcar"
   },
   {
     id: "d3",
     categoria: "bebidas",
     nome: "Guaraná Antarctica Lata 350ml",
-    descricao: "O autêntico refrigerante brasileiro com extrato de guaraná da Amazônia geladíssimo.",
+    descricao: "O autêntico refrigerante brasileiro com extrato de guaraná da Amazônia geladíssimo servido com fatia de laranja.",
     preco: 6.00,
-    imagem: "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?auto=format&fit=crop&w=800&q=80",
-    destaque: "Nacional"
+    imagem: "assets/imagens/guarana-antarctica.jpg",
+    destaque: "Nacional Gelado"
   },
   {
     id: "d4",
@@ -144,16 +144,16 @@ export const PRODUTOS = [
     nome: "Suco Natural de Laranja 500ml",
     descricao: "Suco 100% natural espremido na hora com laranjas frescas selecionadas do interior paulista.",
     preco: 10.00,
-    imagem: "https://images.unsplash.com/photo-1613478223719-2ab802602423?auto=format&fit=crop&w=800&q=80",
+    imagem: "assets/imagens/suco-laranja.jpg",
     destaque: "100% Natural"
   },
   {
     id: "d5",
     categoria: "bebidas",
     nome: "Cerveja Artesanal IPA Ourinhos 500ml",
-    descricao: "Cerveja artesanal estilo American IPA produzida localmente, amargor marcante e notas cítricas.",
+    descricao: "Cerveja artesanal estilo American IPA produzida localmente em Ourinhos, amargor marcante e notas cítricas.",
     preco: 18.00,
-    imagem: "https://images.unsplash.com/photo-1608270104996-5f3366c3a1c6?auto=format&fit=crop&w=800&q=80",
+    imagem: "assets/imagens/cerveja-ipa.jpg",
     destaque: "Artesanal Local"
   },
 

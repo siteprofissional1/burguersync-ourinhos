@@ -35,12 +35,21 @@ adiciona mais uns lanches, use fotos na net com link da imagem para preencher, c
 ```
 
 **Ação do Agente:**
-- Expansão do catálogo com 10 hambúrgueres artesanais gourmet e 5 bebidas geladas, além de porções rústicas, com fotografias culinárias profissionais.
-- Filtro por categorias na vitrine do cliente (Todos, Hambúrgueres, Bebidas, Acompanhamentos).
-- Separação da arquitetura em duas rotas/páginas independentes:
-  - `index.html`: Visão dedicada do Cliente (Cardápio, Carrinho e Checkout).
-  - `admin.html`: Visão da Cozinha / Painel Administrativo.
-- Sistema de controle de acesso por senha no painel administrativo com persistência de sessão e botão de logout.
-- Atualização e push no repositório público do GitHub e deploy contínuo no GitHub Pages.
+- Expansão do catálogo com 10 hambúrgueres artesanais e 5 bebidas geladas.
+- Separação em duas rotas (`index.html` para cliente e `admin.html` para a cozinha).
+- Autenticação por senha para acesso ao monitor da cozinha.
+
+---
+
+### Prompt 4 (Auditoria Visual e Correção das Fotos de Produtos)
+```text
+analisa as fotos, pega link delas, olha as fotos, no guarana voce colocou um cara fazendo musculacao hahaha, ajusta isso
+```
+
+**Ação do Agente:**
+- Auditoria minuciosa de cada uma das imagens do catálogo (hambúrgueres, porções e bebidas).
+- Substituição da foto incorreta do Guaraná (que continha imagem fitness/musculação) por foto gastronômica autêntica e gelada de refrigerante de guaraná com gelo e lata.
+- Validação e harmonização estética de todas as 16 imagens do cardápio com links confiáveis e consistência visual.
+- Atualização em `src/produtos.js`, espelhamento em `frontend/` e sincronização no repositório público do GitHub.
 
 ---
