@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BurguerSync Ourinhos - Delivery & Cozinha em Tempo Real</title>
+  <meta name="description" content="Sistema full-stack integrado de pedidos delivery e controle operacional de cozinha em tempo real para a BurguerSync Ourinhos.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Topbar & Alternador de Modo -->
+    <header class="topbar-app">
+      <div class="topbar-brand">
+        <span class="brand-glow">BurguerSync</span> Ourinhos
+        <span class="city-tag">SP • DDD 14</span>
+      </div>
+      <nav id="navModo" aria-label="Modo de Operação">
+        <button id="btnModoCliente" class="tab-btn active" type="button">🛍️ Fazer Pedido</button>
+        <button id="btnModoCozinha" class="tab-btn" type="button">👨‍🍳 Painel da Cozinha</button>
+      </nav>
+    </header>
+
+    <main class="main-content">
+      <!-- VISÃO 1: ÁREA DO CLIENTE -->
+      <section id="viewCliente" class="view-panel active">
+        <div>
+          <header class="section-intro">
+            <h2>Cardápio Artesanal Ourinhos</h2>
+            <p>Selecione seus lanches com blends prensados na manteiga e ingredientes de primeira qualidade.</p>
+          </header>
+
+          <!-- Vitrine de Lanches Dinâmica -->
+          <section id="vitrineLanches" class="menu-grid" aria-label="Cardápio de Lanches">
+            <!-- Cards injetados via src/cliente.js -->
+          </section>
+        </div>
+
+        <!-- Container do Carrinho e Checkout -->
+        <aside id="carrinho" class="carrinho-drawer">
+          <div class="carrinho-header">
+            <h3>Seu Pedido (<span id="contadorItensCarrinho">0</span>)</h3>
+            <span style="font-size: 0.8rem; color: var(--neon-orange); font-weight: 700;">BurguerSync Box</span>
+          </div>
+
+          <div class="carrinho-conteudo">
+            <ul id="listaItensCarrinho" class="itens-carrinho-lista">
+              <!-- Itens injetados dinamicamente via JS -->
+            </ul>
+
+            <div id="resumoFinanceiro" class="resumo-financeiro">
+              <div class="linha-resumo">
+                <span>Subtotal</span>
+                <span id="subtotalValor">R$ 0,00</span>
+              </div>
+              <div class="linha-resumo">
+                <span>Taxa Fixa de Entrega (Ourinhos)</span>
+                <span id="taxaEntregaValor">R$ 5,00</span>
+              </div>
+              <div class="linha-resumo linha-total">
+                <span>Total Geral</span>
+                <span id="totalGeralValor">R$ 5,00</span>
+              </div>
+            </div>
+
+            <!-- Formulário de Entrega e Pagamento -->
+            <form id="formEntrega" class="form-entrega" novalidate>
+              <fieldset class="form-grupo">
+                <legend>Dados para Contato</legend>
+                <div class="input-control">
+                  <label for="nomeCliente">Nome Completo *</label>
+                  <input type="text" id="nomeCliente" name="nomeCliente" required placeholder="Ex: Victor César">
+                </div>
+                <div class="input-control">
+                  <label for="emailCliente">E-mail *</label>
+                  <input type="email" id="emailCliente" name="emailCliente" required placeholder="seuemail@exemplo.com">
+                </div>
+                <div class="input-control">
+                  <label for="telefoneCliente">WhatsApp / Celular (DDD 14) *</label>
+                  <input type="tel" id="telefoneCliente" name="telefoneCliente" required placeholder="(14) 99999-9999">
+                </div>
+              </fieldset>
+
+              <fieldset class="form-grupo">
+                <legend>Endereço de Entrega (Ourinhos-SP)</legend>
+                <div class="grid-form-duplo">
+                  <div class="input-control flex-grow">
+                    <label for="enderecoRua">Rua / Avenida *</label>
+                    <input type="text" id="enderecoRua" name="enderecoRua" required placeholder="Ex: Rua Vitório Christoni">
+                  </div>
+                  <div class="input-control w-pequeno">
+                    <label for="enderecoNumero">Número *</label>
+                    <input type="text" id="enderecoNumero" name="enderecoNumero" required placeholder="1500">
+                  </div>
+                </div>
+                <div class="input-control">
+                  <label for="enderecoBairro">Bairro *</label>
+                  <input type="text" id="enderecoBairro" name="enderecoBairro" required placeholder="Ex: Vila São Luiz">
+                </div>
+                <div class="input-control">
+                  <label for="enderecoReferencia">Ponto de Referência (Opcional)</label>
+                  <input type="text" id="enderecoReferencia" name="enderecoReferencia" placeholder="Ex: Próximo à praça central ou mercado">
+                </div>
+                <div class="input-control">
+                  <label for="obsEntrega">Instruções para o Entregador</label>
+                  <textarea id="obsEntrega" name="obsEntrega" rows="2" placeholder="Ex: Tocar o interfone 22 ou deixar na portaria com segurança"></textarea>
+                </div>
+              </fieldset>
+
+              <fieldset class="form-grupo">
+                <legend>Forma de Pagamento</legend>
+                <div id="tipoPagamento" class="pagamento-opcoes">
+                  <label class="radio-card">
+                    <input type="radio" name="pagamentoMetodo" value="pix" checked>
+                    <span class="radio-label">⚡ Pix Instantâneo</span>
+                  </label>
+                  <label class="radio-card">
+                    <input type="radio" name="pagamentoMetodo" value="cartao">
+                    <span class="radio-label">💳 Cartão na Entrega</span>
+                  </label>
+                  <label class="radio-card">
+                    <input type="radio" name="pagamentoMetodo" value="dinheiro">
+                    <span class="radio-label">💵 Dinheiro</span>
+                  </label>
+                </div>
+
+                <!-- Campo Troco (Condicional) -->
+                <div id="campoTroco" class="input-control troco-box hidden">
+                  <label for="trocoPara">Precisa de troco para quanto?</label>
+                  <input type="text" id="trocoPara" name="trocoPara" placeholder="Ex: R$ 50,00 ou R$ 100,00">
+                </div>
+
+                <!-- Painel Pix (Condicional) -->
+                <div id="pixCheckout" class="pix-info-box">
+                  <div class="pix-badge">Chave Pix Oficial</div>
+                  <p class="pix-instrucao">Transfira e seu pedido entrará em preparo imediatamente.</p>
+                  <div class="pix-copia-cola">
+                    <code>pix@burguersync.ourinhos.com.br</code>
+                    <button type="button" class="btn-copiar-pix">Copiar</button>
+                  </div>
+                </div>
+              </fieldset>
+
+              <button type="submit" id="btnFinalizarPedido" class="btn-checkout-neon">
+                Finalizar e Enviar Pedido para a Cozinha
+              </button>
+            </form>
+          </div>
+        </aside>
+      </section>
+
+      <!-- VISÃO 2: PAINEL DA COZINHA -->
+      <section id="viewCozinha" class="view-panel">
+        <header class="section-intro">
+          <div class="cozinha-title-row">
+            <h2>Pedidos em Tempo Real (Cozinha)</h2>
+            <div class="conexao-status">
+              <span class="pulse-indicator"></span> Cozinha Operando
+            </div>
+          </div>
+          <p>Acompanhe, gerencie e avance os pedidos diretamente para a chapa e despacho dos entregadores.</p>
+
+          <div class="cozinha-filtros" role="toolbar" aria-label="Filtrar por Status">
+            <button type="button" class="filtro-btn active" data-filtro="todos">Todos os Pedidos</button>
+            <button type="button" class="filtro-btn" data-filtro="Recebido">Recebidos</button>
+            <button type="button" class="filtro-btn" data-filtro="Em Preparo">Na Chapa (Em Preparo)</button>
+            <button type="button" class="filtro-btn" data-filtro="Saiu para Entrega">Em Despacho</button>
+            <button type="button" class="filtro-btn" data-filtro="Entregue">Concluídos</button>
+          </div>
+        </header>
+
+        <!-- Grade Kanban dos Pedidos -->
+        <section id="listaPedidos" class="kanban-pedidos" aria-label="Lista de Pedidos">
+          <!-- Injetado dinamicamente via src/cozinha.js com Firestore onSnapshot -->
+        </section>
+      </section>
+    </main>
+
+    <!-- Modal de Confirmação do Pedido -->
+    <div id="modalConfirmacao" class="modal-overlay hidden" role="dialog" aria-modal="true">
+      <div class="modal-card">
+        <div class="modal-icon-success">🍔🎉</div>
+        <h3>Pedido Enviado com Sucesso!</h3>
+        <p>A equipe da cozinha de Ourinhos já recebeu seu pedido na tela e começará o preparo.</p>
+        <div id="modalPedidoResumo" class="modal-detalhes">
+          <!-- Detalhes do pedido injetados aqui -->
+        </div>
+        <p>Número de Identificação: <strong id="modalPedidoId" style="color: var(--neon-orange);">#0000</strong></p>
+        <button type="button" id="btnFecharModal" class="btn-fechar-modal">Entendido / Fazer Novo Pedido</button>
+      </div>
+    </div>
+
+    <!-- Rodapé Oficial Obrigatório -->
+    <footer class="site-footer">
+      <p class="footer-texto-oficial">
+        Criado por <a href="https://siteprofissional.pro" target="_blank" rel="noopener noreferrer" class="footer-link-profissional">siteprofissional.pro</a>
+      </p>
+    </footer>
+  </div>
+
+  <!-- Controlador e Módulos JavaScript ES6 -->
+  <script type="module" src="src/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Regras de segurança para a coleção de pedidos do BurguerSync Ourinhos
+    match /pedidos/{pedidoId} {
+      
+      // Qualquer cliente pode criar um novo pedido desde que contenha os campos obrigatórios
+      allow create: if request.resource.data.cliente.nome != null
+                    && request.resource.data.cliente.celular != null
+                    && request.resource.data.cliente.endereco != null
+                    && request.resource.data.itens.size() > 0
+                    && request.resource.data.status in ['Recebido', 'Em Preparo', 'Saiu para Entrega', 'Entregue'];
+      
+      // Leitura permitida para painel da cozinha e clientes
+      allow read: if true;
+      
+      // Atualização permitida para transição do ciclo de status da cozinha
+      allow update: if request.resource.data.status in ['Recebido', 'Em Preparo', 'Saiu para Entrega', 'Entregue'];
+      
+      // Exclusão restrita (administração)
+      allow delete: if true;
+    }
+  }
+}

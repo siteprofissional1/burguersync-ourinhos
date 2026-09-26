@@ -1,0 +1,25 @@
+{
+  "name": "burguersync-ourinhos",
+  "version": "2.5.5",
+  "description": "Sistema integrado de delivery e painel de cozinha em tempo real com Firebase e Google Stitch",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "test:schema": "node execution/validate_schema.js",
+    "test:firebase": "node execution/test_firebase_connection.js",
+    "test": "npm run test:schema"
+  },
+  "keywords": [
+    "delivery",
+    "kanban",
+    "firebase",
+    "antigravity",
+    "ourinhos",
+    "senai"
+  ],
+  "author": "Victor César / SENAI Ourinhos",
+  "license": "MIT",
+  "dependencies": {
+    "firebase": "^12.19.0"
+  }
+}

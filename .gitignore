@@ -1,0 +1,16 @@
+# Arquivos de ambiente e segredos
+.env
+*.env.local
+
+# Dependências
+node_modules/
+package-lock.json
+
+# Diretórios transitórios e de logs locais
+.tmp/
+*.log
+npm-debug.log*
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
