@@ -1116,3 +1116,236 @@ button, input, textarea, select {
 .footer-link-profissional:hover {
   text-decoration: underline;
 }
+
+/* =========================================================
+   BARRA DE CATEGORIAS DO CARDÁPIO
+   ========================================================= */
+.categorias-wrapper {
+  margin-bottom: 1.5rem;
+}
+
+.categorias-bar {
+  display: flex;
+  gap: 0.6rem;
+  overflow-x: auto;
+  padding: 0.25rem 0.1rem 0.75rem 0.1rem;
+  scrollbar-width: thin;
+}
+
+.categoria-chip {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  padding: 0.6rem 1.15rem;
+  border-radius: 25px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.categoria-chip:hover {
+  color: var(--text-primary);
+  border-color: var(--neon-orange);
+  background-color: var(--bg-card-hover);
+}
+
+.categoria-chip.active {
+  background-color: var(--neon-orange);
+  color: #000;
+  font-weight: 700;
+  border-color: var(--neon-orange);
+  box-shadow: 0 0 15px var(--neon-orange-glow);
+}
+
+/* =========================================================
+   ESTILOS DE NAVEGAÇÃO ADMIN & LINKS EXTERNOS
+   ========================================================= */
+.admin-top-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.nav-link-btn {
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+  border: 1px solid var(--border-subtle);
+  padding: 0.55rem 1rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: var(--transition-fast);
+}
+
+.nav-link-btn:hover {
+  border-color: var(--neon-cyan);
+  color: var(--neon-cyan);
+}
+
+.btn-danger-soft {
+  color: var(--neon-red);
+}
+
+.btn-danger-soft:hover {
+  border-color: var(--neon-red);
+  color: #FFF;
+  background-color: rgba(255, 51, 75, 0.2);
+}
+
+/* =========================================================
+   TELA DE BLOQUEIO POR SENHA (LOGIN ADMIN)
+   ========================================================= */
+.login-admin-wrapper {
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+.login-admin-card {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-highlight);
+  border-radius: 16px;
+  max-width: 440px;
+  width: 100%;
+  padding: 2.25rem 2rem;
+  text-align: center;
+  box-shadow: var(--shadow-card);
+}
+
+.login-admin-icon {
+  font-size: 3.5rem;
+  margin-bottom: 1rem;
+}
+
+.login-admin-card h2 {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.login-admin-card p {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  margin-bottom: 1.75rem;
+}
+
+.form-login-admin {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  text-align: left;
+}
+
+.erro-login-msg {
+  background-color: rgba(255, 51, 75, 0.15);
+  border: 1px solid var(--neon-red);
+  color: var(--neon-red);
+  padding: 0.6rem 0.8rem;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.login-dica-box {
+  margin-top: 1.5rem;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+}
+
+.login-dica-box code {
+  color: var(--neon-yellow);
+  font-weight: 700;
+}
+
+/* =========================================================
+   MÉTRICAS RÁPIDAS DA COZINHA (CARDS DE TOPO)
+   ========================================================= */
+.metricas-cozinha-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin: 1.25rem 0;
+}
+
+@media (min-width: 768px) {
+  .metricas-cozinha-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.card-metrica {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 1.15rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  border-left-width: 4px;
+}
+
+.metrica-numero {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.metrica-rotulo {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.metrica-recebido {
+  border-left-color: var(--neon-cyan);
+}
+.metrica-recebido .metrica-numero {
+  color: var(--neon-cyan);
+}
+
+.metrica-preparo {
+  border-left-color: var(--neon-yellow);
+}
+.metrica-preparo .metrica-numero {
+  color: var(--neon-yellow);
+}
+
+.metrica-entrega {
+  border-left-color: var(--neon-orange);
+}
+.metrica-entrega .metrica-numero {
+  color: var(--neon-orange);
+}
+
+.metrica-entregue {
+  border-left-color: var(--neon-green);
+}
+.metrica-entregue .metrica-numero {
+  color: var(--neon-green);
+}
+
+.hidden {
+  display: none !important;
+}
+

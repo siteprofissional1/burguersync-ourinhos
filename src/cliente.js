@@ -1,47 +1,22 @@
 /**
  * ==============================================================================
- * BurguerSync Ourinhos - Lógica do Cliente e Carrinho Reativo (Layer 3)
+ * BurguerSync Ourinhos - Lógica da Visão do Cliente e Checkout (Layer 3)
  * ==============================================================================
- * Gerenciamento do catálogo, carrinho em tempo real, validações cadastrais
- * (DDD 14, taxa de R$ 5,00 fixa) e persistência na nuvem via Firestore addDoc.
+ * Catálogo com filtros de categorias, carrinho reativo, cálculo automático com frete
+ * fixo de Ourinhos (R$ 5,00), validação cadastral com DDD 14 e envio ao Firestore.
  */
 
 import { db, collection, addDoc, serverTimestamp } from "./firebase-config.js";
+import { PRODUTOS, CATEGORIAS } from "./produtos.js";
 
-// Catálogo oficial de produtos
-export const PRODUTOS = [
-  {
-    id: "1",
-    nome: "Ourinhos Smash Burguer",
-    descricao: "Pão brioche tostado na manteiga, 2x smash burger artesanal de 80g, queijo cheddar cremoso e bacon crocante.",
-    preco: 28.00,
-    imagem: "assets/imagens/ourinhos-smash.jpg",
-    destaque: "Mais Vendido"
-  },
-  {
-    id: "2",
-    nome: "Monster Bacon SENAI",
-    descricao: "Pão australiano macio, 200g de blend bovino no ponto, camadas fartas de bacon caramelizado, onion rings e molho especial.",
-    preco: 34.00,
-    imagem: "assets/imagens/monster-bacon.jpg",
-    destaque: null
-  },
-  {
-    id: "3",
-    nome: "Batata Rústica Suprema",
-    descricao: "Batatas cortadas em gomos crocantes por fora e macias por dentro, cobertas com fondue de cheddar e farofa de bacon artesanal.",
-    preco: 18.00,
-    imagem: "assets/imagens/batata-suprema.jpg",
-    destaque: null
-  }
-];
-
-// Estado do Carrinho
+// Estado do Carrinho e Filtro
 let carrinho = [];
+let categoriaAtiva = "todos";
 const TAXA_ENTREGA_FIXA = 5.00;
 
 // Elementos DOM
 const vitrineLanches = document.getElementById("vitrineLanches");
+const containerCategorias = document.getElementById("containerCategorias");
 const listaItensCarrinho = document.getElementById("listaItensCarrinho");
 const contadorItensCarrinho = document.getElementById("contadorItensCarrinho");
 const subtotalValor = document.getElementById("subtotalValor");
@@ -65,20 +40,58 @@ export function formatarMoeda(valor) {
 }
 
 /**
- * Renderiza o catálogo de lanches na vitrine
+ * Renderiza os botões de seleção de categorias
+ */
+function renderizarCategorias() {
+  if (!containerCategorias) return;
+  containerCategorias.innerHTML = "";
+
+  CATEGORIAS.forEach(cat => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = `categoria-chip ${cat.id === categoriaAtiva ? "active" : ""}`;
+    btn.textContent = cat.nome;
+    btn.dataset.categoria = cat.id;
+
+    btn.addEventListener("click", () => {
+      containerCategorias.querySelectorAll(".categoria-chip").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      categoriaAtiva = cat.id;
+      renderizarCatalogo();
+    });
+
+    containerCategorias.appendChild(btn);
+  });
+}
+
+/**
+ * Renderiza os produtos filtrados na vitrine
  */
 function renderizarCatalogo() {
   if (!vitrineLanches) return;
   vitrineLanches.innerHTML = "";
 
-  PRODUTOS.forEach(produto => {
+  const produtosExibidos = categoriaAtiva === "todos"
+    ? PRODUTOS
+    : PRODUTOS.filter(p => p.categoria === categoriaAtiva);
+
+  if (produtosExibidos.length === 0) {
+    vitrineLanches.innerHTML = `
+      <div style="grid-column: 1 / -1; text-align: center; padding: 2rem; color: var(--text-muted);">
+        Nenhum produto cadastrado nesta categoria.
+      </div>
+    `;
+    return;
+  }
+
+  produtosExibidos.forEach(produto => {
     const card = document.createElement("article");
     card.className = "card-lanche";
     card.dataset.id = produto.id;
 
     card.innerHTML = `
       <div class="card-media">
-        <img src="${produto.imagem}" alt="${produto.nome}" class="lanche-img" loading="lazy">
+        <img src="${produto.imagem}" alt="${produto.nome}" class="lanche-img" loading="lazy" onerror="this.src='assets/imagens/ourinhos-smash.jpg'">
         ${produto.destaque ? `<span class="badge-tag">${produto.destaque}</span>` : ""}
       </div>
       <div class="card-body">
@@ -94,7 +107,7 @@ function renderizarCatalogo() {
     vitrineLanches.appendChild(card);
   });
 
-  // Vincula eventos aos botões de adicionar
+  // Vincula eventos nos botões de adicionar
   vitrineLanches.querySelectorAll(".btn-add-carrinho").forEach(btn => {
     btn.addEventListener("click", (e) => {
       const id = e.currentTarget.dataset.id;
@@ -150,13 +163,13 @@ function removerDoCarrinho(produtoId) {
 }
 
 /**
- * Atualiza o DOM do carrinho e os cálculos financeiros
+ * Atualiza o DOM do carrinho e os totais
  */
 function atualizarCarrinho() {
   if (!listaItensCarrinho) return;
 
   if (carrinho.length === 0) {
-    listaItensCarrinho.innerHTML = `<li class="carrinho-vazio-msg">Seu carrinho está vazio.<br>Escolha um delicioso lanche acima! 🍔</li>`;
+    listaItensCarrinho.innerHTML = `<li class="carrinho-vazio-msg">Seu carrinho está vazio.<br>Escolha seus lanches e bebidas ao lado! 🍔🥤</li>`;
     if (contadorItensCarrinho) contadorItensCarrinho.textContent = "0";
     if (subtotalValor) subtotalValor.textContent = formatarMoeda(0);
     if (totalGeralValor) totalGeralValor.textContent = formatarMoeda(TAXA_ENTREGA_FIXA);
@@ -187,19 +200,19 @@ function atualizarCarrinho() {
         </div>
         <button type="button" class="btn-remover-item" data-id="${item.id}">Remover</button>
       </div>
-      <input type="text" class="item-obs-input" placeholder="Ex: Sem cebola, ponto da carne..." value="${item.obs || ""}" data-id="${item.id}">
+      <input type="text" class="item-obs-input" placeholder="Ex: Sem cebola, gelo e limão..." value="${item.obs || ""}" data-id="${item.id}">
     `;
 
     listaItensCarrinho.appendChild(li);
   });
 
-  // Atualiza contadores e valores
+  // Atualiza valores financeiros
   if (contadorItensCarrinho) contadorItensCarrinho.textContent = totalQtd;
   if (subtotalValor) subtotalValor.textContent = formatarMoeda(subtotal);
   if (taxaEntregaValor) taxaEntregaValor.textContent = formatarMoeda(TAXA_ENTREGA_FIXA);
   if (totalGeralValor) totalGeralValor.textContent = formatarMoeda(subtotal + TAXA_ENTREGA_FIXA);
 
-  // Vincula eventos nos controles dos itens do carrinho
+  // Vincula botões de controle do carrinho
   listaItensCarrinho.querySelectorAll(".btn-aumentar").forEach(btn => {
     btn.addEventListener("click", () => alterarQuantidade(btn.dataset.id, 1));
   });
@@ -269,7 +282,6 @@ function configurarOpcoesPagamento() {
     });
   });
 
-  // Botão Copiar Chave Pix
   btnCopiarPix?.addEventListener("click", () => {
     const chavePix = "pix@burguersync.ourinhos.com.br";
     navigator.clipboard.writeText(chavePix).then(() => {
@@ -283,7 +295,7 @@ function configurarOpcoesPagamento() {
 }
 
 /**
- * Validação rigorosa dos campos antes de enviar à cozinha
+ * Validação rigorosa dos campos antes do envio
  */
 function validarFormulario() {
   const nome = document.getElementById("nomeCliente")?.value.trim();
@@ -293,11 +305,10 @@ function validarFormulario() {
   const numero = document.getElementById("enderecoNumero")?.value.trim();
   const bairro = document.getElementById("enderecoBairro")?.value.trim();
 
-  // Limpa erros visuais anteriores
   document.querySelectorAll(".input-error").forEach(el => el.classList.remove("input-error"));
 
   if (carrinho.length === 0) {
-    alert("⚠️ Seu carrinho está vazio! Adicione pelo menos um lanche antes de finalizar o pedido.");
+    alert("⚠️ Seu carrinho está vazio! Adicione pelo menos um lanche ou bebida antes de finalizar.");
     return false;
   }
 
@@ -312,7 +323,6 @@ function validarFormulario() {
     return false;
   }
 
-  // DDD 14 de Ourinhos
   const telNumeros = (telefone || "").replace(/\D/g, "");
   if (!telNumeros.startsWith("14") || telNumeros.length < 10 || telNumeros.length > 11) {
     destacarErro("telefoneCliente", "Por favor, informe um telefone de Ourinhos/região com DDD (14).");
@@ -320,12 +330,12 @@ function validarFormulario() {
   }
 
   if (!rua) {
-    destacarErro("enderecoRua", "Informe o nome da rua ou avenida.");
+    destacarErro("enderecoRua", "Informe o nome da rua ou avenida de entrega.");
     return false;
   }
 
   if (!numero) {
-    destacarErro("enderecoNumero", "Informe o número do imóvel.");
+    destacarErro("enderecoNumero", "Informe o número da residência/comércio.");
     return false;
   }
 
@@ -378,7 +388,6 @@ async function finalizarPedido(e) {
 
   const enderecoCompleto = `${rua}, ${numero} - ${bairro}${referencia ? ` (${referencia})` : ""}, Ourinhos-SP`;
 
-  // Payload conforme a Diretiva Layer 1
   const payloadPedido = {
     cliente: {
       nome,
@@ -411,7 +420,6 @@ async function finalizarPedido(e) {
     const docRef = await addDoc(collection(db, "pedidos"), payloadPedido);
     console.log("✅ Pedido gravado com sucesso! ID:", docRef.id);
 
-    // Exibe modal de confirmação
     exibirModalSucesso(docRef.id, payloadPedido);
 
     // Reseta carrinho e formulário
@@ -422,7 +430,6 @@ async function finalizarPedido(e) {
 
   } catch (error) {
     console.error("❌ Falha ao enviar pedido ao Firestore:", error);
-    // Mecanismo de contingência (Self-Annealing)
     try {
       localStorage.setItem("burguersync_failed_order", JSON.stringify(payloadPedido));
     } catch (_) {}
@@ -454,9 +461,10 @@ function exibirModalSucesso(pedidoId, pedido) {
 }
 
 /**
- * Inicialização do módulo do Cliente
+ * Inicialização da interface do Cliente
  */
 export function inicializarCliente() {
+  renderizarCategorias();
   renderizarCatalogo();
   atualizarCarrinho();
   configurarMascaraTelefone();
@@ -469,4 +477,11 @@ export function inicializarCliente() {
   btnFecharModal?.addEventListener("click", () => {
     modalConfirmacao?.classList.add("hidden");
   });
+}
+
+// Inicializa automaticamente se carregado em página dedicada
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", inicializarCliente);
+} else {
+  inicializarCliente();
 }

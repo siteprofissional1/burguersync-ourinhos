@@ -4,55 +4,67 @@ Guia rápido de comandos e rotinas para execução, teste e deploy do projeto **
 
 ---
 
-## 🚀 1. Inicialização Rápida no Windows
+## 🚀 1. Inicialização Rápida no Windows / PowerShell
 
-Basta clicar duas vezes no script:
-```cmd
-executar.bat
-```
-Ou executar diretamente via terminal:
+No terminal PowerShell ou Prompt de Comando:
 ```bash
 npm start
 ```
-Acesse a aplicação no navegador em: **`http://localhost:3000`**
+*(Ou execute `.\executar.bat` no PowerShell / clique duas vezes no `executar.bat` no Explorer).*
+
+### 🌐 Links Separados de Acesso:
+* **🛍️ Área do Cliente (Cardápio & Pedidos):** [`http://localhost:3000`](http://localhost:3000)
+* **👨‍🍳 Painel da Cozinha (Admin Restrito):** [`http://localhost:3000/admin.html`](http://localhost:3000/admin.html)
+
+### 🔐 Credenciais de Acesso da Cozinha:
+* **Senhas aceitas:** `senai2026` ou `admin123` *(ou `burguer123`)*
 
 ---
 
-## 🧪 2. Rotinas de Testes e Validação Determinística (Layer 3)
+## 🍔 2. Catálogo Expandido
+
+* **10 Hambúrgueres Artesanais:**
+  1. Ourinhos Smash Burguer (R$ 28,00)
+  2. Monster Bacon SENAI (R$ 34,00)
+  3. Duplo Cheddar Melt (R$ 32,00)
+  4. Smokehouse BBQ Artesanal (R$ 36,00)
+  5. Trufado Gorgonzola Burger (R$ 39,00)
+  6. Crispy Chicken Supreme (R$ 27,00)
+  7. Costela Desfiada 8 Horas (R$ 38,00)
+  8. Jalapeño Fire Smash (R$ 31,00)
+  9. Veggie Cogumelos Salteados (R$ 33,00)
+  10. Triplo Smash Vulcão (R$ 42,00)
+* **5 Bebidas Geladas:**
+  1. Coca-Cola Original Lata 350ml (R$ 6,00)
+  2. Coca-Cola Sem Açúcar 350ml (R$ 6,00)
+  3. Guaraná Antarctica Lata 350ml (R$ 6,00)
+  4. Suco Natural de Laranja 500ml (R$ 10,00)
+  5. Cerveja Artesanal IPA Ourinhos 500ml (R$ 18,00)
+* **Acompanhamentos:**
+  1. Batata Rústica Suprema (R$ 18,00)
+
+---
+
+## 🧪 3. Rotinas de Testes e Validação Determinística (Layer 3)
 
 ### Validação de Schemas e Regras de Negócio:
 ```bash
 node execution/validate_schema.js
 ```
-*Testa a integridade de dados, máscara de DDD 14 e taxa de R$ 5,00.*
 
 ### Teste de Conexão com Firebase Firestore:
 ```bash
 node execution/test_firebase_connection.js
 ```
-*Executa escrita, leitura e limpeza de documento de teste na coleção `pedidos`.*
 
----
-
-## 🌐 3. Estrutura de Diretórios
-
-```text
-├── .env                     # Chaves de API e credenciais
-├── .tmp/                    # Dados transitórios de debug e schema
-├── assets/imagens/          # Imagens oficiais dos produtos
-├── backend/                 # Regras do Firestore e servidor local
-├── directives/              # SOPs e manuais de estratégia (Layer 1)
-├── documentation/           # Documentação de arquitetura e promptHistory.md
-├── execution/               # Scripts determinísticos de teste (Layer 3)
-├── frontend/                # Espelhamento dos módulos e arquivos do cliente
-├── src/                     # Código modular ES6 (cliente, cozinha, firebase)
-├── index.html               # Aplicação principal unificada
-├── style.css                # Folha de estilos Dark Mode com neons
-├── executar.bat             # Inicializador em lote no Windows
-└── README.md                # Apresentação bilíngue e badges
+### Teste End-to-End do Ciclo Operacional:
+```bash
+node execution/test_full_order_flow.js
 ```
 
 ---
 
 ## ☁️ 4. Deploy no GitHub Pages
-O projeto é 100% estático no cliente e conecta-se via CDN ao Firebase Cloud Firestore, tornando-o diretamente publicável no GitHub Pages via branch `main` na raiz `/`.
+* **Repositório Público:** [https://github.com/siteprofissional1/burguersync-ourinhos](https://github.com/siteprofissional1/burguersync-ourinhos)
+* **Cardápio Online (Cliente):** [https://siteprofissional1.github.io/burguersync-ourinhos/](https://siteprofissional1.github.io/burguersync-ourinhos/)
+* **Painel da Cozinha Online (Admin):** [https://siteprofissional1.github.io/burguersync-ourinhos/admin.html](https://siteprofissional1.github.io/burguersync-ourinhos/admin.html)

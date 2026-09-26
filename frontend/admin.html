@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BurguerSync Ourinhos - Painel Restrito da Cozinha (Admin)</title>
+  <meta name="description" content="Painel administrativo em tempo real para controle de pedidos e comandas de cozinha do BurguerSync Ourinhos.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Topbar Administrativa -->
+    <header class="topbar-app">
+      <div class="topbar-brand">
+        <span class="brand-glow">BurguerSync</span> Cozinha
+        <span class="city-tag">ADMIN • OURINHOS</span>
+      </div>
+      <nav class="admin-top-nav">
+        <a href="index.html" class="nav-link-btn" title="Ir para a loja do cliente">🛍️ Ir para o Cardápio</a>
+        <button type="button" id="btnLogoutAdmin" class="nav-link-btn btn-danger-soft" title="Encerrar sessão de operador">🔒 Sair</button>
+      </nav>
+    </header>
+
+    <main class="main-content">
+      <!-- TELA DE BLOQUEIO POR SENHA (LOGIN) -->
+      <section id="telaBloqueio" class="login-admin-wrapper">
+        <div class="login-admin-card">
+          <div class="login-admin-icon">🔐</div>
+          <h2>Área Restrita da Cozinha</h2>
+          <p>Informe a senha de operador para acessar as comandas e o quadro kanban em tempo real.</p>
+
+          <form id="formLoginAdmin" class="form-login-admin">
+            <div class="input-control">
+              <label for="senhaAdminInput">Senha de Acesso</label>
+              <input type="password" id="senhaAdminInput" name="senhaAdmin" required placeholder="Digite a senha..." autofocus autocomplete="current-password">
+            </div>
+            <div id="erroLoginMsg" class="erro-login-msg hidden"></div>
+            <button type="submit" class="btn-checkout-neon">Liberar Acesso à Cozinha</button>
+          </form>
+
+          <div class="login-dica-box">
+            💡 <strong>Dica de Acesso:</strong> Senha padrão de treinamento: <code>senai2026</code> ou <code>admin123</code>
+          </div>
+        </div>
+      </section>
+
+      <!-- PAINEL PRINCIPAL DA COZINHA (EXIBIDO APÓS SENHA) -->
+      <section id="painelPrincipalAdmin" class="view-panel hidden">
+        <header class="section-intro">
+          <div class="cozinha-title-row">
+            <div>
+              <h2>Quadro Kanban de Pedidos (Tempo Real)</h2>
+              <p>Gerenciamento sincronizado de comandas, tempos de preparo e despacho dos entregadores.</p>
+            </div>
+            <div class="conexao-status">
+              <span class="pulse-indicator"></span> Cozinha Operando em Tempo Real
+            </div>
+          </div>
+
+          <!-- Métricas Rápidas Operacionais -->
+          <div class="metricas-cozinha-grid">
+            <div class="card-metrica metrica-recebido">
+              <span class="metrica-numero" id="contadorRecebidos">0</span>
+              <span class="metrica-rotulo">Novos Recebidos</span>
+            </div>
+            <div class="card-metrica metrica-preparo">
+              <span class="metrica-numero" id="contadorPreparo">0</span>
+              <span class="metrica-rotulo">Na Chapa (Preparo)</span>
+            </div>
+            <div class="card-metrica metrica-entrega">
+              <span class="metrica-numero" id="contadorEntrega">0</span>
+              <span class="metrica-rotulo">Em Despacho</span>
+            </div>
+            <div class="card-metrica metrica-entregue">
+              <span class="metrica-numero" id="contadorEntregues">0</span>
+              <span class="metrica-rotulo">Entregues Concluídos</span>
+            </div>
+          </div>
+
+          <!-- Filtros de Status -->
+          <div class="cozinha-filtros" role="toolbar" aria-label="Filtrar por Status">
+            <button type="button" class="filtro-btn active" data-filtro="todos">Todos os Pedidos</button>
+            <button type="button" class="filtro-btn" data-filtro="Recebido">🔵 Recebidos</button>
+            <button type="button" class="filtro-btn" data-filtro="Em Preparo">🟡 Na Chapa</button>
+            <button type="button" class="filtro-btn" data-filtro="Saiu para Entrega">🟠 Em Despacho</button>
+            <button type="button" class="filtro-btn" data-filtro="Entregue">🟢 Entregues</button>
+          </div>
+        </header>
+
+        <!-- Grade Kanban dos Pedidos -->
+        <section id="listaPedidos" class="kanban-pedidos" aria-label="Lista de Pedidos">
+          <!-- Injetado dinamicamente via src/cozinha.js -->
+        </section>
+      </section>
+    </main>
+
+    <!-- Rodapé Oficial Obrigatório -->
+    <footer class="site-footer">
+      <p class="footer-texto-oficial">
+        Criado por <a href="https://siteprofissional.pro" target="_blank" rel="noopener noreferrer" class="footer-link-profissional">siteprofissional.pro</a>
+      </p>
+    </footer>
+  </div>
+
+  <!-- Controlador e Módulos JavaScript ES6 -->
+  <script type="module" src="src/cozinha.js"></script>
+</body>
+</html>

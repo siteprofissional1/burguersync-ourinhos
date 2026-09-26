@@ -2,8 +2,8 @@
  * ==============================================================================
  * BurguerSync Ourinhos - Servidor Local de Desenvolvimento e API (Layer 3)
  * ==============================================================================
- * Servidor HTTP nativo sem dependências externas complexas para hospedar e testar
- * localmente a aplicação com suporte a tipos MIME e headers adequados.
+ * Suporte a rotas limpas (/ para o cardápio e /admin para o painel restrito da cozinha)
+ * com headers de CORS e resolução de arquivos estáticos.
  */
 
 const http = require('http');
@@ -33,15 +33,19 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  // Normaliza caminho do arquivo solicitado
-  let safePath = path.normalize(req.url.split('?')[0]);
-  if (safePath === '/' || safePath === '\\') {
-    safePath = '/index.html';
+  // Normaliza caminho da requisição
+  let requestPath = req.url.split('?')[0];
+
+  if (requestPath === '/' || requestPath === '') {
+    requestPath = '/index.html';
+  } else if (requestPath === '/admin' || requestPath === '/cozinha') {
+    requestPath = '/admin.html';
   }
 
+  let safePath = path.normalize(requestPath);
   const filePath = path.join(PUBLIC_DIR, safePath);
 
-  // Impede escape de diretório (Directory Traversal)
+  // Impede Directory Traversal
   if (!filePath.startsWith(PUBLIC_DIR)) {
     res.writeHead(403, { 'Content-Type': 'text/plain' });
     res.end('Acesso proibido.');
@@ -69,6 +73,8 @@ const server = http.createServer((req, res) => {
 server.listen(PORT, () => {
   console.log(`\n======================================================`);
   console.log(`🍔 BurguerSync Ourinhos - Servidor Local Ativo!`);
-  console.log(`🚀 Acesse a aplicação em: http://localhost:${PORT}`);
+  console.log(`🛍️  Link do Cliente (Cardápio): http://localhost:${PORT}`);
+  console.log(`👨‍🍳 Link do Admin (Cozinha):   http://localhost:${PORT}/admin.html`);
+  console.log(`🔐 Senha padrão do Admin:     senai2026 ou admin123`);
   console.log(`======================================================\n`);
 });

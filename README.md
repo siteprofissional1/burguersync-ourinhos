@@ -13,67 +13,46 @@
 
 **[🇧🇷 Português](#-sobre-o-projeto-pt-br)** • **[🇺🇸 English](#-about-the-project-en)**
 
+---
+
+### 🌐 Links Oficiais da Aplicação
+
+| Ambiente | Link de Acesso | Descrição |
+| :--- | :--- | :--- |
+| **🛍️ Loja do Cliente** | [Cardápio Online](https://siteprofissional1.github.io/burguersync-ourinhos/) | Catálogo com 10 hambúrgueres, 5 bebidas, carrinho e checkout Pix. |
+| **👨‍🍳 Painel da Cozinha (Admin)** | [Painel da Cozinha 🔒](https://siteprofissional1.github.io/burguersync-ourinhos/admin.html) | Monitor em tempo real protegido por senha (`senai2026` ou `admin123`). |
+
 </div>
 
 ---
 
 ## 🇧🇷 Sobre o Projeto (PT-BR)
 
-O **BurguerSync Ourinhos** é uma aplicação web full-stack de ponta a ponta com sincronização reativa em tempo real. Desenvolvida para eliminar a perda de comandas de papel e unificar o ciclo entre a experiência de compra do cliente e a linha de produção dos chapeiros na cozinha.
+O **BurguerSync Ourinhos** é uma aplicação web full-stack de ponta a ponta com sincronização reativa em tempo real. Desenvolvida para eliminar a perda de comandas físicas e sincronizar instantaneamente a jornada de compra do cliente com a linha de produção dos chapeiros na cozinha.
 
-O projeto foi concebido e acelerado através da plataforma **Google Antigravity**, integrando prototipagem de alta fidelidade via **Google Stitch MCP** e banco de dados NoSQL serverless **Firebase Cloud Firestore**.
+O projeto foi orquestrado através da plataforma **Google Antigravity**, integrando prototipagem de alta fidelidade via **Google Stitch MCP** e persistência serverless no **Firebase Cloud Firestore**.
 
 ### 🌟 Destaques e Funcionalidades
 
-- **🛍️ Visão do Cliente:** Vitrine fluida de lanches artesanais, gaveta expansível de carrinho, cálculo automático de subtotal e taxa de entrega fixa de Ourinhos (**R$ 5,00**), validação estrita de formulário (exigindo **DDD 14**) e checkout dinâmico via Pix Copia-e-Cola e QR Code.
-- **👨‍🍳 Visão da Cozinha (Kanban em Tempo Real):** Monitor reativo ouvindo eventos do Firestore com `onSnapshot`, alertas sonoros de novos pedidos (Buzzer de chapa), cartões informativos com destaque para observações de ingredientes e botões de transição ergonômica de status:
-  - 🔵 **Recebido** (`#00D4FF`)
-  - 🟡 **Em Preparo / Na Chapa** (`#FFB800`)
-  - 🟠 **Saiu para Entrega** (`#FF9000`)
-  - 🟢 **Entregue** (`#04D361`)
-- **🛡️ Resiliência & Self-Annealing:** Mecanismo de persistência local em caso de instabilidade na nuvem e reconexão automática resiliente.
+- **🛍️ Visão Exclusiva do Cliente (`index.html`):** 
+  - Catálogo completo com **10 Hambúrgueres Artesanais** e **5 Bebidas Geladas**, além de porções rústicas.
+  - Filtro interativo por categorias (**Todos**, **Hambúrgueres**, **Bebidas**, **Acompanhamentos**).
+  - Gaveta expansível de carrinho com controle de quantidades e observações personalizadas por item (ex: *"Sem cebola, queijo extra"*).
+  - Cálculo de subtotal automático e taxa de entrega fixa de Ourinhos (**R$ 5,00**).
+  - Validação estrita cadastral com exigência do **DDD 14** (Ourinhos e região).
+  - Checkout dinâmico com opção de troco para dinheiro e chave **Pix Copia e Cola**.
+  
+- **👨‍🍳 Painel Restrito da Cozinha & Admin (`admin.html`):**
+  - **Acesso protegido por senha** (senha padrão: `senai2026` ou `admin123`) com persistência em sessão e botão de logout.
+  - Métricas em tempo real no topo (**Novos Recebidos**, **Na Chapa**, **Em Despacho**, **Entregues**).
+  - Escuta reativa do Firestore com `onSnapshot` e **buzzer sonoro** (Web Audio API) a cada novo pedido.
+  - Cartões com informações completas do cliente, link direto de **WhatsApp** com um clique e botões de transição ergonômica de status:
+    - 🔵 **Recebido** (`#00D4FF`)
+    - 🟡 **Na Chapa / Em Preparo** (`#FFB800`)
+    - 🟠 **Em Despacho** (`#FF9000`)
+    - 🟢 **Entregue** (`#04D361`)
 
-### 🤖 Agentes de IA e Skill Packs Empregados
-
-- **Google Antigravity Orchestrator (Layer 2):** Orquestração autônoma do ciclo de vida, decomposição de tarefas e garantia de alinhamento com os SOPs da Layer 1.
-- **Stitch MCP (Google Stitch Integration):** Extração de tokens de design, layout semântico e fotografia gastronômica de alta definição.
-- **Firebase MCP / Firestore SDK v10:** Persistência reativa na nuvem com validação de schemas de dados.
-- **Validador Determinístico Layer 3:** Automação em Node.js para sanitização de dados cadastrais e conferência de integridade de pedidos.
-
-### 🛠️ Estrutura de Diretórios
-
-```text
-├── .env                     # Chaves de API e credenciais seguras
-├── .tmp/                    # Buffers de schema e validações transitórias
-├── assets/imagens/          # Imagens otimizadas (Smash, Bacon, Batata)
-├── backend/                 # Regras do Firestore e servidor local
-├── directives/              # SOPs e manuais estratégicos (Layer 1)
-├── documentation/           # Diagramas de arquitetura e promptHistory.md
-├── execution/               # Scripts determinísticos de validação (Layer 3)
-├── frontend/                # Módulos espelhados da interface web
-├── src/                     # Código ES6 modular (cliente, cozinha, firebase)
-├── index.html               # Aplicação web unificada
-├── style.css                # Design System Dark Mode com neons
-├── executar.bat             # Inicializador em lote no Windows
-└── README.md                # Documentação técnica mestre bilíngue
-```
-
-### ⚡ Como Executar Localmente
-
-1. Clone o repositório ou navegue até o diretório do projeto:
-   ```bash
-   cd pc-senai/aula07-projeto1-burguersync
-   ```
-2. Instale as dependências:
-   ```bash
-   npm install
-   ```
-3. Inicie o servidor local:
-   ```bash
-   npm start
-   ```
-   *(Ou execute `executar.bat` no Windows)*
-4. Abra seu navegador em `http://localhost:3000`
+- **🛡️ Resiliência & Self-Annealing:** Backup de contingência em `localStorage` e reconexão automática ao Firestore.
 
 ---
 
@@ -81,24 +60,36 @@ O projeto foi concebido e acelerado através da plataforma **Google Antigravity*
 
 **BurguerSync Ourinhos** is an end-to-end full-stack web application featuring real-time reactive synchronization. Designed to eliminate lost paper tickets and unify the workflow between the customer ordering experience and the kitchen grill team.
 
-The project was architected and accelerated via **Google Antigravity**, integrating high-fidelity design generation through **Google Stitch MCP** and serverless NoSQL data persistence via **Firebase Cloud Firestore**.
+The project was architected via **Google Antigravity**, integrating high-fidelity design generation through **Google Stitch MCP** and serverless NoSQL data persistence via **Firebase Cloud Firestore**.
 
 ### 🌟 Key Features
 
-- **🛍️ Customer View:** Sleek gourmet burger catalog, responsive drawer cart, automated delivery fee calculation (fixed **R$ 5.00** for Ourinhos), strict form validation (requiring regional **area code 14**), and dynamic instant Pix copy-and-paste checkout.
-- **👨‍🍳 Real-Time Kitchen Kanban:** Reactive monitor listening to Firestore changes via `onSnapshot`, Web Audio buzzer alerts for incoming orders, prominent ingredient customizations highlighting, and tactile operational status pills:
-  - 🔵 **Received** (`#00D4FF`)
-  - 🟡 **In Prep / On Grill** (`#FFB800`)
-  - 🟠 **Out for Delivery** (`#FF9000`)
-  - 🟢 **Delivered** (`#04D361`)
-- **🛡️ Resilience & Self-Annealing:** Local fallback caching during connection drops and automated WebSocket reconnect handlers.
+- **🛍️ Dedicated Customer Storefront (`index.html`):**
+  - Complete catalog featuring **10 Gourmet Burgers**, **5 Chilled Beverages**, and artisan sides.
+  - Smooth category filter chips (**All**, **Burgers**, **Drinks**, **Sides**).
+  - Responsive drawer cart with itemized custom notes (e.g., *"No onions, well-done"*).
+  - Automated delivery fee calculation (fixed **R$ 5.00** for Ourinhos).
+  - Regional phone validation enforcing **area code (14)**.
+  - Instant Pix copy-and-paste checkout and cash change calculator.
 
-### 🤖 AI Agents & Skill Packs Used
+- **👨‍🍳 Dedicated Kitchen & Admin Dashboard (`admin.html`):**
+  - **Password-protected access** (default passwords: `senai2026` or `admin123`) with session state and secure logout.
+  - Live metric counters (**Received**, **On Grill**, **Out for Delivery**, **Delivered**).
+  - Real-time Firestore event stream (`onSnapshot`) with Web Audio kitchen buzzer chimes.
+  - One-click customer WhatsApp integration and ergonomic status transition buttons.
 
-- **Google Antigravity Orchestrator (Layer 2):** Autonomous lifecycle coordination and strategic directives adherence.
-- **Google Stitch MCP Server:** Design token harmonization and culinary photography assets.
-- **Firebase MCP / Firestore SDK v10:** Reactive cloud events and schema-validated persistence.
-- **Deterministic Layer 3 Runners:** Deterministic Node.js scripts for input sanitization and schema assertion.
+---
+
+## ⚡ Como Rodar Localmente no Windows
+
+No terminal PowerShell ou Prompt de Comando:
+```bash
+npm start
+```
+*(Ou execute `.\executar.bat` no PowerShell)*
+
+* Cardápio do Cliente: `http://localhost:3000`
+* Painel da Cozinha: `http://localhost:3000/admin.html` *(Senha: `senai2026` ou `admin123`)*
 
 ---
 

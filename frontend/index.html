@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BurguerSync Ourinhos - Delivery & Cozinha em Tempo Real</title>
-  <meta name="description" content="Sistema full-stack integrado de pedidos delivery e controle operacional de cozinha em tempo real para a BurguerSync Ourinhos.">
+  <title>BurguerSync Ourinhos - Cardápio Delivery & Pedidos Online</title>
+  <meta name="description" content="Peça os melhores hambúrgueres artesanais e bebidas geladas de Ourinhos-SP com entrega rápida e pagamento via Pix ou cartão.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
@@ -12,29 +12,37 @@
 </head>
 <body>
   <div id="app">
-    <!-- Topbar & Alternador de Modo -->
+    <!-- Topbar Oficial da Loja -->
     <header class="topbar-app">
       <div class="topbar-brand">
         <span class="brand-glow">BurguerSync</span> Ourinhos
         <span class="city-tag">SP • DDD 14</span>
       </div>
-      <nav id="navModo" aria-label="Modo de Operação">
-        <button id="btnModoCliente" class="tab-btn active" type="button">🛍️ Fazer Pedido</button>
-        <button id="btnModoCozinha" class="tab-btn" type="button">👨‍🍳 Painel da Cozinha</button>
+      <nav class="admin-top-nav">
+        <a href="admin.html" class="nav-link-btn" title="Acesso restrito para chapeiros e gerência">
+          👨‍🍳 Painel da Cozinha (Admin) 🔒
+        </a>
       </nav>
     </header>
 
     <main class="main-content">
-      <!-- VISÃO 1: ÁREA DO CLIENTE -->
+      <!-- VISÃO DO CLIENTE (CARDÁPIO & CHECKOUT) -->
       <section id="viewCliente" class="view-panel active">
         <div>
           <header class="section-intro">
             <h2>Cardápio Artesanal Ourinhos</h2>
-            <p>Selecione seus lanches com blends prensados na manteiga e ingredientes de primeira qualidade.</p>
+            <p>Selecione seus lanches com blends prensados na manteiga, acompanhamentos e bebidas geladíssimas.</p>
           </header>
 
-          <!-- Vitrine de Lanches Dinâmica -->
-          <section id="vitrineLanches" class="menu-grid" aria-label="Cardápio de Lanches">
+          <!-- Seletor de Categorias -->
+          <div class="categorias-wrapper">
+            <nav id="containerCategorias" class="categorias-bar" aria-label="Categorias do Cardápio">
+              <!-- Chips injetados dinamicamente via src/cliente.js -->
+            </nav>
+          </div>
+
+          <!-- Vitrine de Produtos Dinâmica -->
+          <section id="vitrineLanches" class="menu-grid" aria-label="Produtos do Cardápio">
             <!-- Cards injetados via src/cliente.js -->
           </section>
         </div>
@@ -151,32 +159,6 @@
           </div>
         </aside>
       </section>
-
-      <!-- VISÃO 2: PAINEL DA COZINHA -->
-      <section id="viewCozinha" class="view-panel">
-        <header class="section-intro">
-          <div class="cozinha-title-row">
-            <h2>Pedidos em Tempo Real (Cozinha)</h2>
-            <div class="conexao-status">
-              <span class="pulse-indicator"></span> Cozinha Operando
-            </div>
-          </div>
-          <p>Acompanhe, gerencie e avance os pedidos diretamente para a chapa e despacho dos entregadores.</p>
-
-          <div class="cozinha-filtros" role="toolbar" aria-label="Filtrar por Status">
-            <button type="button" class="filtro-btn active" data-filtro="todos">Todos os Pedidos</button>
-            <button type="button" class="filtro-btn" data-filtro="Recebido">Recebidos</button>
-            <button type="button" class="filtro-btn" data-filtro="Em Preparo">Na Chapa (Em Preparo)</button>
-            <button type="button" class="filtro-btn" data-filtro="Saiu para Entrega">Em Despacho</button>
-            <button type="button" class="filtro-btn" data-filtro="Entregue">Concluídos</button>
-          </div>
-        </header>
-
-        <!-- Grade Kanban dos Pedidos -->
-        <section id="listaPedidos" class="kanban-pedidos" aria-label="Lista de Pedidos">
-          <!-- Injetado dinamicamente via src/cozinha.js com Firestore onSnapshot -->
-        </section>
-      </section>
     </main>
 
     <!-- Modal de Confirmação do Pedido -->
@@ -202,6 +184,6 @@
   </div>
 
   <!-- Controlador e Módulos JavaScript ES6 -->
-  <script type="module" src="src/app.js"></script>
+  <script type="module" src="src/cliente.js"></script>
 </body>
 </html>
